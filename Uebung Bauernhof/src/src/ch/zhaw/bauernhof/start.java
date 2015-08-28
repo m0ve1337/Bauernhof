@@ -16,6 +16,7 @@ public class start
 		hof.addTier(katze);
 		hof.gibLaut();
 		System.out.println("test 1 complete");
+		System.out.println("test 2 complete");
 
 	}
 }
