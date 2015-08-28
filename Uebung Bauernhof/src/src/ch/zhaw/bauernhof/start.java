@@ -17,6 +17,7 @@ public class start
 		hof.gibLaut();
 		System.out.println("test 1 complete");
 		System.out.println("test 2 complete");
+		System.out.println("test 3 complete");
 
 	}
 }
