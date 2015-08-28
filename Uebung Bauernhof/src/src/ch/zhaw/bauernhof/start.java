@@ -15,6 +15,7 @@ public class start
 		hof.addTier(kuh);
 		hof.addTier(katze);
 		hof.gibLaut();
+		System.out.println("test 1 complete");
 
 	}
 }
