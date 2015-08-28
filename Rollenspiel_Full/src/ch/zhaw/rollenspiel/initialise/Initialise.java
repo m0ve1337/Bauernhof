@@ -11,9 +11,9 @@ import ch.zhaw.rollenspiel.waffen.Waffe;
 public class Initialise {
 
 	public static void main(String[] args) {
-		Mensch mensch1 = new Mensch("Mensch");
-		Ork ork1 = new Ork("Ork");
-		Zauberer zauber1 = new Zauberer("Merlin", 12);
+		Mensch mensch1 = new Mensch("Aeberhard");
+		Ork ork1 = new Ork("Chresta");
+		Zauberer zauber1 = new Zauberer("Aeberhard2", 12);
 		Waffe schwert = new Waffe(12);
 
 		mensch1.setWaffe(schwert);
