@@ -1,6 +1,9 @@
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,25 +11,22 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class MeinErstesGUI
+public class EntscheidungsKnopf
 {
 	private JFrame frame;
+	private List<String> antworten;
+	private Random randomGenerator;
 
-	public MeinErstesGUI()
+	public EntscheidungsKnopf()
 	{
 		createFrame();
-
-
+		antworten = new ArrayList<String>();
+		setDefaultAntworten();
 
 	}
 
 	private void createFrame()
 	{
-
-
-
-		Entscheidungsknopf randomButton = new Entscheidungsknopf();
-
 		frame = new JFrame("Entscheidungsknopf");
 		createMenuBar();
 
@@ -42,7 +42,7 @@ public class MeinErstesGUI
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				button.setText(randomButton.randomAntwort());
+				button.setText(randomAntwort());
 				System.out.println("Button-Label geändert");
 
 			}
@@ -96,6 +96,33 @@ public class MeinErstesGUI
 
 	}
 
+	public void setDefaultAntworten()
+	{
+		antworten.add("Surfern lernen");
+		antworten.add("Einen Lamborghini fahren");
+		antworten.add("Bungee jumping");
+		antworten.add("Wakeboarden");
+		antworten.add("Snowboarden");
+		antworten.add("Windsurfen lernen");
+		antworten.add("Polarlichter beobachten");
+		antworten.add(" Eine andere Sprache lernen");
+		antworten.add("Einen Striptease hinlegen");
+		antworten.add(" 2 Tage durchfeiern");
+		antworten.add("Ein Tattoo stechen lassen");
+		antworten.add("Die 10 besten Filme aller Zeiten sehen");
+		antworten.add("2 Tage Fasten");
+		antworten.add("Einen Baum mit einer Axt fällen ");
+		antworten.add("Eine Nacht im Gefängnis verbringen");
+
+	}
+
+	public String randomAntwort()
+	{
+		randomGenerator = new Random();
+		int index = randomGenerator.nextInt(antworten.size());
+		return antworten.get(index);
+	}
+
 	class OeffnenListener implements ActionListener
 	// innere Klasse
 	{
@@ -104,6 +131,7 @@ public class MeinErstesGUI
 		public void actionPerformed(ActionEvent oeffnen)
 		{
 			System.out.println("öffnen angeklickt");
+
 		}
 
 	}
@@ -114,7 +142,7 @@ public class MeinErstesGUI
 		@Override
 		public void actionPerformed(ActionEvent ueber)
 		{
-			System.out.println("ueber angeklickt");
+			System.out.println("über angeklickt");
 		}
 	}
 }
