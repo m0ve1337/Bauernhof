@@ -1,3 +1,3 @@
 # ZHAW
-Uebung Bauernhof
-Test
+Uebungen
+
