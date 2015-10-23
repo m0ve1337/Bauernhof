@@ -1,5 +1,6 @@
 package ch.zhaw.basteln;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,7 +10,8 @@ import javax.swing.JFrame;
 public class Gui
 {
 	JFrame frame = new JFrame();
-	JButton button = new JButton("button klicken");
+	JButton button = new JButton("change Color");
+	ZeichenPanel panel = new ZeichenPanel();
 
 	public Gui()
 	{
@@ -23,12 +25,13 @@ public class Gui
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				button.setText("wurde geklickt!");
+				panel.repaint();
 			}
 		});
 
-		frame.setSize(400, 500);
-		frame.add(new ZeichenPanel());
+		frame.setSize(500, 500);
+		frame.add(BorderLayout.CENTER, panel);
+		frame.add(BorderLayout.SOUTH, button);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
