@@ -11,7 +11,7 @@ public class Gui
 {
 	JFrame frame = new JFrame();
 	JButton button = new JButton("change Color");
-	ZeichenPanel panel = new ZeichenPanel();
+	Uebung2 panel = new Uebung2();
 
 	public Gui()
 	{

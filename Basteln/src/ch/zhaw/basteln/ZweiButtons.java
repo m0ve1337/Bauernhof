@@ -47,7 +47,7 @@ public class ZweiButtons
 		});
 
 		label = new JLabel("Ich bin ein Label");
-		ZeichenPanel panel = new ZeichenPanel();
+		Uebung2 panel = new Uebung2();
 
 		frame.getContentPane().add(BorderLayout.SOUTH, colorButton);
 		frame.getContentPane().add(BorderLayout.CENTER, panel);

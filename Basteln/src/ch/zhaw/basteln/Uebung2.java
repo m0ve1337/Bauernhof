@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-public class ZeichenPanel extends JPanel
+public class Uebung2 extends JPanel
 {
 private static final int WIDTH = 100;
 private static final int HEIGHT = 100;
@@ -32,9 +32,4 @@ private static final int HEIGHT = 100;
 		
 
 	}
-public void los(){
-	
-}
-
-	
 }
