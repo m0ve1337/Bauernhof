@@ -54,6 +54,7 @@ public class EntscheidungsKnopf
 
 		eingabefeld.setToolTipText("Bitte hier eine Tat eingeben");
 		topPanel.add(eingabefeld);
+		eingabefeld.addActionListener(new SaveListener());
 		JButton saveButton = new JButton("save");
 		saveButton.addActionListener(new SaveListener());
 		topPanel.add(saveButton);
@@ -171,6 +172,7 @@ public class EntscheidungsKnopf
 		public void actionPerformed(ActionEvent ueber)
 		{
 			System.out.println("über angeklickt");
+			JOptionPane.showMessageDialog(frame, "Isch mega!");
 		}
 	}
 
