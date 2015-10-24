@@ -1,63 +1,83 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class EntscheidungsKnopf
 {
 	private JFrame frame;
-	private List<String> antworten;
-	private Random randomGenerator;
+	private Antworten antworten = new Antworten();
+	private JButton superButton = new JButton("Random Aktivität vorschlagen!");
+
 
 	public EntscheidungsKnopf()
 	{
 		createGui();
-		antworten = new ArrayList<String>();
-		setDefaultAntworten();
 
 	}
 
 	private void createGui()
-	//ToDo: Button als eigene Methode anlegen (Rückgabetyp: Button implementiert direkt
-	// den ActionListener. Achtung: Button muss FINAL sein!
-	// Button wird so implementiert : Jbutton button = createButton();
+	// erstellt das Gui Fenster und fügt die Menüs, Buttons und Label hinzu
 	{
 		frame = new JFrame("Entscheidungsknopf");
-		createMenuBar();
-
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		Container contentPane = frame.getContentPane();
+		createMenuBar();
+		JButton button = randomAnswerButton();
+		contentPane.add(BorderLayout.CENTER, button);
+		// Panel für Label, Eingabefeld und Save Button erstellen
+		JPanel topPanel = new JPanel();
+		topPanel.setBackground(Color.darkGray);
+		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		contentPane.add(BorderLayout.NORTH, topPanel);
 
-		JButton button = new JButton("Ich bin ein riesen Button: drück mich");
-		button.addActionListener(new ActionListener()
+		// topPanel mit Komponenten bestücken (Label, Eingabefeld, SaveButton)
+		JLabel labelEingabefeld = new JLabel("Tat: ");
+		labelEingabefeld.setForeground(Color.white);
+		topPanel.add(labelEingabefeld);
+		JTextField eingabefeld = new JTextField(20);
+		eingabefeld.setToolTipText("Bitte hier eine Tat eingeben");
+		topPanel.add(eingabefeld);
+		JButton saveButton = new JButton("save");
+		topPanel.add(saveButton);
+
+
+		frame.setSize(500, 500);
+		frame.setVisible(true);
+	}
+
+	public JButton randomAnswerButton()
+	{
+		superButton.addActionListener(new ActionListener()
 
 		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				button.setText(getRandomAntwort());
+
+				superButton.setText(antworten.setRandomAntwort());
 				System.out.println("Button-Label geändert");
 
 			}
 
-
 		});
-		contentPane.add(button);
-		// frame.pack();
-		frame.setSize(500, 500);
-		frame.setVisible(true);
+		return superButton;
 	}
+
 
 	private void createMenuBar()
 	{
@@ -81,27 +101,39 @@ public class EntscheidungsKnopf
 		dateiMenu.add(beendenItem);
 		beendenItem.addActionListener(new ActionListener()
 		{
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				System.out.println("beenden angeklickt");
-				beendenJoption();
-				
-			}
+				int wertInt = JOptionPane.showConfirmDialog(frame,
+						"Wirklich beenden?");
 
-			private void beendenJoption() {
-				int wertInt = JOptionPane.showConfirmDialog(frame,"Wirklich beenden?");
-				
-				if(wertInt == JOptionPane.OK_OPTION){
-				
+				if (wertInt == JOptionPane.OK_OPTION)
+				{
+
 					System.exit(0);
 				}
-			
-				}
-				
-			
 
+			}
+
+		});
+
+		JMenuItem resetItem = new JMenuItem("Einträge löschen");
+		dateiMenu.add(resetItem);
+		resetItem.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+
+				antworten.alleAntwortenLoeschen();
+				setDeletedButtonText();
+
+
+
+			}
 		});
 
 		// Menü (Hilfe) erzeugen und in die Menüzeile (JMenuBar) einfügen
@@ -113,31 +145,9 @@ public class EntscheidungsKnopf
 
 	}
 
-	private void setDefaultAntworten()
+	private void setDeletedButtonText()
 	{
-		antworten.add("Surfern lernen");
-		antworten.add("Einen Lamborghini fahren");
-		antworten.add("Bungee jumping");
-		antworten.add("Wakeboarden");
-		antworten.add("Snowboarden");
-		antworten.add("Windsurfen lernen");
-		antworten.add("Polarlichter beobachten");
-		antworten.add(" Eine andere Sprache lernen");
-		antworten.add("Einen Striptease hinlegen");
-		antworten.add(" 2 Tage durchfeiern");
-		antworten.add("Ein Tattoo stechen lassen");
-		antworten.add("Die 10 besten Filme aller Zeiten sehen");
-		antworten.add("2 Tage Fasten");
-		antworten.add("Einen Baum mit einer Axt fällen ");
-		antworten.add("Eine Nacht im Gefängnis verbringen");
-
-	}
-
-	private String getRandomAntwort()
-	{
-		randomGenerator = new Random();
-		int index = randomGenerator.nextInt(antworten.size());
-		return antworten.get(index);
+		superButton.setText("Einträge gelöscht!");
 	}
 
 	class OeffnenListener implements ActionListener
@@ -154,6 +164,7 @@ public class EntscheidungsKnopf
 	}
 
 	class UeberListener implements ActionListener
+	// innere Klasse
 	{
 
 		@Override
