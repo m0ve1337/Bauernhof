@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
 public class Antworten
 {
 	public List<String> antworten;
@@ -38,12 +37,13 @@ public class Antworten
 	// Zieht eine zufällige Antowrt aus der Antworten-Liste
 	{
 		randomGenerator = new Random();
-		if (antworten.isEmpty()){
+		if (antworten.isEmpty())
+		{
 			return "Bitte zuerst eine Antwort eingeben!";
-		}
-		else{
-		int index = randomGenerator.nextInt(antworten.size());
-		return antworten.get(index);
+		} else
+		{
+			int index = randomGenerator.nextInt(antworten.size());
+			return antworten.get(index);
 		}
 	}
 
@@ -51,4 +51,26 @@ public class Antworten
 	{
 		antworten.removeAll(antworten);
 	}
+
+	public void addAntwort(String text)
+	{
+		aufDoppelteEinträgePrüfen(text);
+		antworten.add(text);
+	}
+
+	public String aufDoppelteEinträgePrüfen(String text)
+	{
+		if (!antworten.contains(text))
+		{
+			System.out.println("ok");
+			return text;
+		} else
+		{
+			System.out.println("doppelt");
+
+			return null;
+		}
+	}
+
+	// TODO Display Error in Interface
 }

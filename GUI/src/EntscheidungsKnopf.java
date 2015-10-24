@@ -18,12 +18,15 @@ import javax.swing.JTextField;
 public class EntscheidungsKnopf
 {
 	private JFrame frame;
-	private Antworten antworten = new Antworten();
-	private JButton superButton = new JButton("Random Aktivität vorschlagen!");
-
+	private Antworten antworten;
+	private JButton entscheidungsButton;
+	private JTextField eingabefeld;
 
 	public EntscheidungsKnopf()
 	{
+		entscheidungsButton = new JButton("Random Aktivität vorschlagen!");
+		antworten = new Antworten();
+		eingabefeld = new JTextField(20);
 		createGui();
 
 	}
@@ -48,12 +51,12 @@ public class EntscheidungsKnopf
 		JLabel labelEingabefeld = new JLabel("Tat: ");
 		labelEingabefeld.setForeground(Color.white);
 		topPanel.add(labelEingabefeld);
-		JTextField eingabefeld = new JTextField(20);
+
 		eingabefeld.setToolTipText("Bitte hier eine Tat eingeben");
 		topPanel.add(eingabefeld);
 		JButton saveButton = new JButton("save");
+		saveButton.addActionListener(new SaveListener());
 		topPanel.add(saveButton);
-
 
 		frame.setSize(500, 500);
 		frame.setVisible(true);
@@ -61,7 +64,7 @@ public class EntscheidungsKnopf
 
 	public JButton randomAnswerButton()
 	{
-		superButton.addActionListener(new ActionListener()
+		entscheidungsButton.addActionListener(new ActionListener()
 
 		{
 
@@ -69,15 +72,14 @@ public class EntscheidungsKnopf
 			public void actionPerformed(ActionEvent e)
 			{
 
-				superButton.setText(antworten.setRandomAntwort());
+				entscheidungsButton.setText(antworten.setRandomAntwort());
 				System.out.println("Button-Label geändert");
 
 			}
 
 		});
-		return superButton;
+		return entscheidungsButton;
 	}
-
 
 	private void createMenuBar()
 	{
@@ -131,8 +133,6 @@ public class EntscheidungsKnopf
 				antworten.alleAntwortenLoeschen();
 				setDeletedButtonText();
 
-
-
 			}
 		});
 
@@ -147,7 +147,7 @@ public class EntscheidungsKnopf
 
 	private void setDeletedButtonText()
 	{
-		superButton.setText("Einträge gelöscht!");
+		entscheidungsButton.setText("Einträge gelöscht!");
 	}
 
 	class OeffnenListener implements ActionListener
@@ -171,6 +171,30 @@ public class EntscheidungsKnopf
 		public void actionPerformed(ActionEvent ueber)
 		{
 			System.out.println("über angeklickt");
+		}
+	}
+
+	class SaveListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			if (eingabefeld.getText().isEmpty())
+			{
+				entscheidungsButton.setText("bitte keine leeren Eingaben!");
+			}
+
+			else if (eingabefeld.getText().equals(antworten))
+			{
+
+				entscheidungsButton.setText("bitte keine doppelten Eingaben!");
+
+			} else
+			{
+				antworten.addAntwort(eingabefeld.getText());
+			}
+
 		}
 	}
 }
