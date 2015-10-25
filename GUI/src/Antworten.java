@@ -54,6 +54,12 @@ public class Antworten
 		antworten.removeAll(antworten);
 	}
 
+	public String getAnzahlItemsInListe()
+	{
+
+		return " " + antworten.size();
+	}
+
 	public void addAntwort(String text)
 	{
 		aufDoppelteEinträgePrüfen(text);

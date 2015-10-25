@@ -22,12 +22,15 @@ public class EntscheidungsKnopf
 	private Antworten antworten;
 	private static JButton entscheidungsButton;
 	private JTextField eingabefeld;
+	private JLabel counterLabel;
 
 	public EntscheidungsKnopf()
 	{
 		entscheidungsButton = new JButton("Random Aktivität vorschlagen!");
 		antworten = new Antworten();
 		eingabefeld = new JTextField(20);
+		counterLabel = new JLabel("");
+		updateCounter();
 		createGui();
 
 	}
@@ -61,6 +64,8 @@ public class EntscheidungsKnopf
 		JButton saveButton = new JButton("save");
 		saveButton.addActionListener(saveListener);
 		topPanel.add(saveButton);
+		topPanel.add(counterLabel);
+		counterLabel.setForeground(Color.WHITE);
 
 		frame.setSize(700, 500);
 		frame.setVisible(true);
@@ -83,6 +88,12 @@ public class EntscheidungsKnopf
 
 		});
 		return entscheidungsButton;
+	}
+
+	private void updateCounter()
+	{
+		counterLabel.setText("Anzahl verfügbare Aktivitäten: "
+				+ antworten.getAnzahlItemsInListe());
 	}
 
 	private void createMenuBar()
@@ -114,6 +125,7 @@ public class EntscheidungsKnopf
 
 				antworten.alleAntwortenLoeschen();
 				setDeletedButtonText();
+				updateCounter();
 
 			}
 		});
@@ -140,8 +152,6 @@ public class EntscheidungsKnopf
 			}
 
 		});
-
-
 
 		// Menü (Hilfe) erzeugen und in die Menüzeile (JMenuBar) einfügen
 		JMenu hilfeMenu = new JMenu("Hilfe");
@@ -210,6 +220,8 @@ public class EntscheidungsKnopf
 			{
 				antworten.addAntwort(eingabefeld.getText());
 				eingabefeld.setText(null);
+				updateCounter();
+
 			}
 
 		}
