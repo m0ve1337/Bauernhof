@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,7 +20,7 @@ public class EntscheidungsKnopf
 {
 	private JFrame frame;
 	private Antworten antworten;
-	private JButton entscheidungsButton;
+	private static JButton entscheidungsButton;
 	private JTextField eingabefeld;
 
 	public EntscheidungsKnopf()
@@ -40,6 +41,7 @@ public class EntscheidungsKnopf
 		Container contentPane = frame.getContentPane();
 		createMenuBar();
 		JButton button = randomAnswerButton();
+		button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 27));
 		contentPane.add(BorderLayout.CENTER, button);
 		// Panel für Label, Eingabefeld und Save Button erstellen
 		JPanel topPanel = new JPanel();
@@ -48,18 +50,19 @@ public class EntscheidungsKnopf
 		contentPane.add(BorderLayout.NORTH, topPanel);
 
 		// topPanel mit Komponenten bestücken (Label, Eingabefeld, SaveButton)
-		JLabel labelEingabefeld = new JLabel("Tat: ");
+		JLabel labelEingabefeld = new JLabel("Aktivität: ");
 		labelEingabefeld.setForeground(Color.white);
 		topPanel.add(labelEingabefeld);
 
 		eingabefeld.setToolTipText("Bitte hier eine Tat eingeben");
 		topPanel.add(eingabefeld);
-		eingabefeld.addActionListener(new SaveListener());
+		SaveListener saveListener = new SaveListener();
+		eingabefeld.addActionListener(saveListener);
 		JButton saveButton = new JButton("save");
-		saveButton.addActionListener(new SaveListener());
+		saveButton.addActionListener(saveListener);
 		topPanel.add(saveButton);
 
-		frame.setSize(500, 500);
+		frame.setSize(700, 500);
 		frame.setVisible(true);
 	}
 
@@ -97,30 +100,8 @@ public class EntscheidungsKnopf
 		JMenuItem oeffnenItem = new JMenuItem("Öffnen");
 
 		dateiMenu.add(oeffnenItem); // Eintrag dem Dateimenü hinzufügen
-		oeffnenItem.addActionListener(new OeffnenListener());
 		// ActionListener hinzufügen über innere Klasse
-
-		JMenuItem beendenItem = new JMenuItem("Beenden");
-		dateiMenu.add(beendenItem);
-		beendenItem.addActionListener(new ActionListener()
-		{
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				System.out.println("beenden angeklickt");
-				int wertInt = JOptionPane.showConfirmDialog(frame,
-						"Wirklich beenden?");
-
-				if (wertInt == JOptionPane.OK_OPTION)
-				{
-
-					System.exit(0);
-				}
-
-			}
-
-		});
+		oeffnenItem.addActionListener(new OeffnenListener());
 
 		JMenuItem resetItem = new JMenuItem("Einträge löschen");
 		dateiMenu.add(resetItem);
@@ -137,6 +118,31 @@ public class EntscheidungsKnopf
 			}
 		});
 
+		JMenuItem beendenItem = new JMenuItem("Beenden");
+		dateiMenu.add(beendenItem);
+		beendenItem.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("beenden angeklickt");
+				int wertInt = JOptionPane.showConfirmDialog(frame,
+						"Wirklich beenden?", "Beenden?",
+						JOptionPane.WARNING_MESSAGE);
+
+				if (wertInt == JOptionPane.OK_OPTION)
+				{
+
+					System.exit(0);
+				}
+
+			}
+
+		});
+
+
+
 		// Menü (Hilfe) erzeugen und in die Menüzeile (JMenuBar) einfügen
 		JMenu hilfeMenu = new JMenu("Hilfe");
 		bar.add(hilfeMenu);
@@ -146,9 +152,21 @@ public class EntscheidungsKnopf
 
 	}
 
-	private void setDeletedButtonText()
+	public void setDeletedButtonText()
 	{
 		entscheidungsButton.setText("Einträge gelöscht!");
+	}
+
+	public static void setAddedText()
+	{
+		entscheidungsButton.setText("Eintrag hinzugefügt!");
+
+	}
+
+	public static void setDeclinedText()
+	{
+		entscheidungsButton.setText("Eintrag bereits vorhanden!");
+
 	}
 
 	class OeffnenListener implements ActionListener
@@ -172,7 +190,8 @@ public class EntscheidungsKnopf
 		public void actionPerformed(ActionEvent ueber)
 		{
 			System.out.println("über angeklickt");
-			JOptionPane.showMessageDialog(frame, "Isch mega!");
+			JOptionPane.showMessageDialog(frame, "Isch mega!", null,
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -187,14 +206,10 @@ public class EntscheidungsKnopf
 				entscheidungsButton.setText("bitte keine leeren Eingaben!");
 			}
 
-			else if (eingabefeld.getText().equals(antworten))
-			{
-
-				entscheidungsButton.setText("bitte keine doppelten Eingaben!");
-
-			} else
+			else
 			{
 				antworten.addAntwort(eingabefeld.getText());
+				eingabefeld.setText(null);
 			}
 
 		}

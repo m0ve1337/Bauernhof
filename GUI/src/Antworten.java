@@ -4,16 +4,16 @@ import java.util.Random;
 
 public class Antworten
 {
-	public List<String> antworten;
-	private Random randomGenerator;
+	private List<String> antworten;
+
 
 	public Antworten()
 	{
 		antworten = new ArrayList<>();
-		setDefaultAntworten();
+		setDefaultActvities();
 	}
 
-	private void setDefaultAntworten()
+	private void setDefaultActvities()
 	{
 		antworten.add("Surfern lernen");
 		antworten.add("Einen Lamborghini fahren");
@@ -36,10 +36,10 @@ public class Antworten
 	public String setRandomAntwort()
 	// Zieht eine zufällige Antowrt aus der Antworten-Liste
 	{
-		randomGenerator = new Random();
+		Random randomGenerator = new Random();
 		if (antworten.isEmpty())
 		{
-			return "Bitte zuerst eine Antwort eingeben!";
+			return "Bitte zuerst eine Aktivität eingeben!";
 		} else
 		{
 			int index = randomGenerator.nextInt(antworten.size());
@@ -48,7 +48,9 @@ public class Antworten
 	}
 
 	public void alleAntwortenLoeschen()
+	// Alle Antworten aus der Liste entfernen
 	{
+		
 		antworten.removeAll(antworten);
 	}
 
@@ -58,19 +60,51 @@ public class Antworten
 		antworten.add(text);
 	}
 
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((antworten == null) ? 0 : antworten.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Antworten other = (Antworten) obj;
+		if (antworten == null)
+		{
+			if (other.antworten != null)
+				return false;
+		} else if (!antworten.equals(other.antworten))
+			return false;
+		return true;
+	}
+
 	public String aufDoppelteEinträgePrüfen(String text)
 	{
 		if (!antworten.contains(text))
 		{
 			System.out.println("ok");
+			EntscheidungsKnopf.setAddedText();
+
 			return text;
 		} else
 		{
 			System.out.println("doppelt");
+			EntscheidungsKnopf.setDeclinedText();
 
 			return null;
 		}
 	}
 
-	// TODO Display Error in Interface
+
 }
