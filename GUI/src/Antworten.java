@@ -54,7 +54,7 @@ public class Antworten
 		antworten.removeAll(antworten);
 	}
 
-	public String getAnzahlItemsInListe()
+	public String getStringlItemsInListe()
 	{
 
 		return " " + antworten.size();
@@ -94,7 +94,7 @@ public class Antworten
 			return false;
 		return true;
 	}
-
+// TODO: doppelt verhindern !
 	public String aufDoppelteEinträgePrüfen(String text)
 	{
 		if (!antworten.contains(text))
@@ -111,6 +111,6 @@ public class Antworten
 			return null;
 		}
 	}
-
+//TODO auf "  " Leerzeichen prüfen bzw. mittels Trim abschneiden
 
 }

@@ -93,7 +93,7 @@ public class EntscheidungsKnopf
 	private void updateCounter()
 	{
 		counterLabel.setText("Anzahl verfügbare Aktivitäten: "
-				+ antworten.getAnzahlItemsInListe());
+				+ antworten.getStringlItemsInListe());
 	}
 
 	private void createMenuBar()
@@ -179,7 +179,7 @@ public class EntscheidungsKnopf
 
 	}
 
-	class OeffnenListener implements ActionListener
+	private class OeffnenListener implements ActionListener
 	// innere Klasse
 	{
 
@@ -192,7 +192,7 @@ public class EntscheidungsKnopf
 
 	}
 
-	class UeberListener implements ActionListener
+	private class UeberListener implements ActionListener
 	// innere Klasse
 	{
 
@@ -205,7 +205,7 @@ public class EntscheidungsKnopf
 		}
 	}
 
-	class SaveListener implements ActionListener
+	private class SaveListener implements ActionListener
 	{
 
 		@Override
