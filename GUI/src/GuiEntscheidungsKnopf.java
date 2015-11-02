@@ -16,28 +16,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class GuiEntscheidungsKnopf
-{
-	private JFrame frame;
-	private Antworten antworten;
-	private JButton entscheidungsButton;
-	private JTextField eingabefeld;
-	private JLabel counterLabel;
+public class GuiEntscheidungsKnopf {
+	private JFrame		frame;
+	private Antworten	antworten;
+	private JButton		entscheidungsButton;
+	private JTextField	eingabefeld;
+	private JLabel		counterLabel;
 
-	public GuiEntscheidungsKnopf()
-	{
+	public GuiEntscheidungsKnopf() {
 		entscheidungsButton = new JButton("Random Aktivität vorschlagen!");
 		antworten = new Antworten();
 		eingabefeld = new JTextField(20);
-		counterLabel = new JLabel("");
+		counterLabel = new JLabel();
 		updateCounter();
 		createGui();
 
 	}
 
-	private void createGui()
-	// erstellt das Gui Fenster und fügt die Menüs, Buttons und Label hinzu
-	{
+	private void createGui() {
+		// erstellt das Gui Fenster und fügt die Menüs, Buttons und Label hinzu
+
 		frame = new JFrame("Entscheidungsknopf");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -71,15 +69,13 @@ public class GuiEntscheidungsKnopf
 		frame.setVisible(true);
 	}
 
-	private JButton randomAnswerButton()
-	{
+	private JButton randomAnswerButton() {
 		entscheidungsButton.addActionListener(new ActionListener()
 
 		{
 
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 
 				entscheidungsButton.setText(antworten.getRandomAntwort());
 				System.out.println("Button-Label geändert");
@@ -90,14 +86,11 @@ public class GuiEntscheidungsKnopf
 		return entscheidungsButton;
 	}
 
-	private void updateCounter()
-	{
-		counterLabel.setText("Anzahl verfügbare Aktivitäten: "
-				+ antworten.getItemsInListe());
+	private void updateCounter() {
+		counterLabel.setText("Anzahl verfügbare Aktivitäten: " + antworten.getItemsInListe());
 	}
 
-	private void createMenuBar()
-	{
+	private void createMenuBar() {
 		// Menüzeile (JMenuBar) erzeugen und in das Fenster (JFrame) einfügen
 		JMenuBar bar = new JMenuBar();
 		frame.setJMenuBar(bar);
@@ -114,20 +107,16 @@ public class GuiEntscheidungsKnopf
 
 		JMenuItem resetItem = new JMenuItem("Einträge löschen");
 		dateiMenu.add(resetItem);
-		resetItem.addActionListener(new ActionListener()
-		{
+		resetItem.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 
 				System.out.println("beenden angeklickt");
-				int wertInt = JOptionPane.showConfirmDialog(frame,
-						"Wirklich alle Einträge löschen?", "Löschen?",
+				int wertInt = JOptionPane.showConfirmDialog(frame, "Wirklich alle Einträge löschen?", "Löschen?",
 						JOptionPane.WARNING_MESSAGE);
 
-				if (wertInt == JOptionPane.OK_OPTION)
-				{
+				if (wertInt == JOptionPane.OK_OPTION) {
 
 					antworten.alleAntwortenLoeschen();
 					entscheidungsButton.setText("Einträge gelöscht!");
@@ -139,19 +128,16 @@ public class GuiEntscheidungsKnopf
 
 		JMenuItem beendenItem = new JMenuItem("Beenden");
 		dateiMenu.add(beendenItem);
-		beendenItem.addActionListener(new ActionListener()
-		{
+
+		beendenItem.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				System.out.println("beenden angeklickt");
-				int wertInt = JOptionPane.showConfirmDialog(frame,
-						"Wirklich beenden?", "Beenden?",
+				int wertInt = JOptionPane.showConfirmDialog(frame, "Wirklich beenden?", "Beenden?",
 						JOptionPane.WARNING_MESSAGE);
 
-				if (wertInt == JOptionPane.OK_OPTION)
-				{
+				if (wertInt == JOptionPane.OK_OPTION) {
 
 					System.exit(0);
 				}
@@ -169,57 +155,53 @@ public class GuiEntscheidungsKnopf
 
 	}
 
-	private class OeffnenListener implements ActionListener
-	// innere Klasse
-	{
+	private class OeffnenListener implements ActionListener {
+		// innere Klasse
 
 		@Override
-		public void actionPerformed(ActionEvent oeffnen)
-		{
+		public void actionPerformed(ActionEvent oeffnen) {
 			System.out.println("öffnen angeklickt ");
 
 		}
 
 	}
 
-	private class UeberListener implements ActionListener
-	// innere Klasse
-	{
+	private class UeberListener implements ActionListener {
+		// innere Klasse
 
 		@Override
-		public void actionPerformed(ActionEvent ueber)
-		{
+		public void actionPerformed(ActionEvent ueber) {
 			System.out.println("über angeklickt");
-			JOptionPane.showMessageDialog(frame,
-					"Wenn labgweilig: Button klicken!", null,
+			JOptionPane.showMessageDialog(frame, "Wenn langweilig: Button klicken!", "über..",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
-	private class SaveListener implements ActionListener
-	{
+	private class SaveListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			if (eingabefeld.getText().isEmpty())
-			{
+		public void actionPerformed(ActionEvent e) {
+			String eingabe = eingabefeld.getText().trim();
+
+			if (eingabe.isEmpty()) {
 				entscheidungsButton.setText("bitte keine leeren Eingaben!");
+				eingabefeld.requestFocus();
 
 			}
 
-			else if (antworten.checkIfExistingEntry(eingabefeld.getText()))
-			{
+			else if (antworten.checkIfExistingEntry(eingabe)) {
 				entscheidungsButton.setText("Eintrag bereits vorhanden!");
+				eingabefeld.requestFocus();
 
 			}
 
-			else
-			{
-				antworten.addAntwortToList(eingabefeld.getText());
+			else {
+
+				antworten.addAntwortToList(eingabe);
 				entscheidungsButton.setText("Eintrag hinzugefügt!");
 				eingabefeld.setText(null);
 				updateCounter();
+				eingabefeld.requestFocus();
 
 			}
 

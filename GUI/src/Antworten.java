@@ -2,18 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Antworten
-{
-	private List<String> antworten;
+public class Antworten {
+	private List<String>	antworten;
 
-	public Antworten()
-	{
+	public Antworten() {
 		antworten = new ArrayList<>();
 		setDefaultActivities();
 	}
 
-	private void setDefaultActivities()
-	{
+	private void setDefaultActivities() {
 		antworten.add("Surfern lernen");
 		antworten.add("Einen Lamborghini fahren");
 		antworten.add("Bungee jumping");
@@ -33,51 +30,43 @@ public class Antworten
 	}
 
 	public String getRandomAntwort()
-	// Zieht eine zufällige Antowrt aus der Antworten-Liste
+	// Zieht eine zufällige Antwort aus der Antworten-Liste
 	{
 		Random randomGenerator = new Random();
-		if (antworten.isEmpty())
-		{
+		if (antworten.isEmpty()) {
 			return "Bitte zuerst eine Aktivität eingeben!";
-		} else
-		{
+		}
+		else {
 			int index = randomGenerator.nextInt(antworten.size());
 			return antworten.get(index);
 		}
 	}
 
-	public void alleAntwortenLoeschen()
-	{
-
+	public void alleAntwortenLoeschen() {
 		antworten.removeAll(antworten);
 	}
 
-	public int getItemsInListe()
-	{
-
+	public int getItemsInListe() {
 		return antworten.size();
 	}
 
-	public void addAntwortToList(String text)
-	{
+	public void addAntwortToList(String text) {
+
 		antworten.add(text);
 	}
 
-	public boolean checkIfExistingEntry(String text)
-	{
-		if (!antworten.contains(text))
-		{
+	public boolean checkIfExistingEntry(String text) {
+		if (!antworten.contains(text)) {
 			System.out.println("ok");
 
 			return false;
 
-		} else
-		{
+		}
+		else {
 			System.out.println("doppelt");
 			return true;
 
 		}
 	}
-	// TODO auf "  " Leerzeichen prüfen bzw. mittels Trim abschneiden
 
 }
