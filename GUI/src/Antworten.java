@@ -6,14 +6,13 @@ public class Antworten
 {
 	private List<String> antworten;
 
-
 	public Antworten()
 	{
 		antworten = new ArrayList<>();
-		setDefaultActvities();
+		setDefaultActivities();
 	}
 
-	private void setDefaultActvities()
+	private void setDefaultActivities()
 	{
 		antworten.add("Surfern lernen");
 		antworten.add("Einen Lamborghini fahren");
@@ -33,7 +32,7 @@ public class Antworten
 
 	}
 
-	public String setRandomAntwort()
+	public String getRandomAntwort()
 	// Zieht eine zufällige Antowrt aus der Antworten-Liste
 	{
 		Random randomGenerator = new Random();
@@ -48,69 +47,37 @@ public class Antworten
 	}
 
 	public void alleAntwortenLoeschen()
-	// Alle Antworten aus der Liste entfernen
 	{
-		
+
 		antworten.removeAll(antworten);
 	}
 
-	public String getStringlItemsInListe()
+	public int getItemsInListe()
 	{
 
-		return " " + antworten.size();
+		return antworten.size();
 	}
 
-	public void addAntwort(String text)
+	public void addAntwortToList(String text)
 	{
-		aufDoppelteEinträgePrüfen(text);
 		antworten.add(text);
 	}
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((antworten == null) ? 0 : antworten.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Antworten other = (Antworten) obj;
-		if (antworten == null)
-		{
-			if (other.antworten != null)
-				return false;
-		} else if (!antworten.equals(other.antworten))
-			return false;
-		return true;
-	}
-// TODO: doppelt verhindern !
-	public String aufDoppelteEinträgePrüfen(String text)
+	public boolean checkIfExistingEntry(String text)
 	{
 		if (!antworten.contains(text))
 		{
 			System.out.println("ok");
-			EntscheidungsKnopf.setAddedText();
 
-			return text;
+			return false;
+
 		} else
 		{
 			System.out.println("doppelt");
-			EntscheidungsKnopf.setDeclinedText();
+			return true;
 
-			return null;
 		}
 	}
-//TODO auf "  " Leerzeichen prüfen bzw. mittels Trim abschneiden
+	// TODO auf "  " Leerzeichen prüfen bzw. mittels Trim abschneiden
 
 }

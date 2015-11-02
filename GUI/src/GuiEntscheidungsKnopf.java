@@ -16,15 +16,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class EntscheidungsKnopf
+public class GuiEntscheidungsKnopf
 {
 	private JFrame frame;
 	private Antworten antworten;
-	private static JButton entscheidungsButton;
+	private JButton entscheidungsButton;
 	private JTextField eingabefeld;
 	private JLabel counterLabel;
 
-	public EntscheidungsKnopf()
+	public GuiEntscheidungsKnopf()
 	{
 		entscheidungsButton = new JButton("Random Aktivität vorschlagen!");
 		antworten = new Antworten();
@@ -71,7 +71,7 @@ public class EntscheidungsKnopf
 		frame.setVisible(true);
 	}
 
-	public JButton randomAnswerButton()
+	private JButton randomAnswerButton()
 	{
 		entscheidungsButton.addActionListener(new ActionListener()
 
@@ -81,7 +81,7 @@ public class EntscheidungsKnopf
 			public void actionPerformed(ActionEvent e)
 			{
 
-				entscheidungsButton.setText(antworten.setRandomAntwort());
+				entscheidungsButton.setText(antworten.getRandomAntwort());
 				System.out.println("Button-Label geändert");
 
 			}
@@ -93,7 +93,7 @@ public class EntscheidungsKnopf
 	private void updateCounter()
 	{
 		counterLabel.setText("Anzahl verfügbare Aktivitäten: "
-				+ antworten.getStringlItemsInListe());
+				+ antworten.getItemsInListe());
 	}
 
 	private void createMenuBar()
@@ -109,9 +109,7 @@ public class EntscheidungsKnopf
 		// Menüeinträge (JMenuItem) erzeugen und dem Menü (JMenu) "Datei"
 		// hinzufügen
 		JMenuItem oeffnenItem = new JMenuItem("Öffnen");
-
 		dateiMenu.add(oeffnenItem); // Eintrag dem Dateimenü hinzufügen
-		// ActionListener hinzufügen über innere Klasse
 		oeffnenItem.addActionListener(new OeffnenListener());
 
 		JMenuItem resetItem = new JMenuItem("Einträge löschen");
@@ -123,9 +121,18 @@ public class EntscheidungsKnopf
 			public void actionPerformed(ActionEvent e)
 			{
 
-				antworten.alleAntwortenLoeschen();
-				setDeletedButtonText();
-				updateCounter();
+				System.out.println("beenden angeklickt");
+				int wertInt = JOptionPane.showConfirmDialog(frame,
+						"Wirklich alle Einträge löschen?", "Löschen?",
+						JOptionPane.WARNING_MESSAGE);
+
+				if (wertInt == JOptionPane.OK_OPTION)
+				{
+
+					antworten.alleAntwortenLoeschen();
+					entscheidungsButton.setText("Einträge gelöscht!");
+					updateCounter();
+				}
 
 			}
 		});
@@ -162,23 +169,6 @@ public class EntscheidungsKnopf
 
 	}
 
-	public void setDeletedButtonText()
-	{
-		entscheidungsButton.setText("Einträge gelöscht!");
-	}
-
-	public static void setAddedText()
-	{
-		entscheidungsButton.setText("Eintrag hinzugefügt!");
-
-	}
-
-	public static void setDeclinedText()
-	{
-		entscheidungsButton.setText("Eintrag bereits vorhanden!");
-
-	}
-
 	private class OeffnenListener implements ActionListener
 	// innere Klasse
 	{
@@ -200,7 +190,8 @@ public class EntscheidungsKnopf
 		public void actionPerformed(ActionEvent ueber)
 		{
 			System.out.println("über angeklickt");
-			JOptionPane.showMessageDialog(frame, "Isch mega!", null,
+			JOptionPane.showMessageDialog(frame,
+					"Wenn labgweilig: Button klicken!", null,
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
@@ -214,11 +205,19 @@ public class EntscheidungsKnopf
 			if (eingabefeld.getText().isEmpty())
 			{
 				entscheidungsButton.setText("bitte keine leeren Eingaben!");
+
+			}
+
+			else if (antworten.checkIfExistingEntry(eingabefeld.getText()))
+			{
+				entscheidungsButton.setText("Eintrag bereits vorhanden!");
+
 			}
 
 			else
 			{
-				antworten.addAntwort(eingabefeld.getText());
+				antworten.addAntwortToList(eingabefeld.getText());
+				entscheidungsButton.setText("Eintrag hinzugefügt!");
 				eingabefeld.setText(null);
 				updateCounter();
 
