@@ -10,7 +10,7 @@ public class IOSerialise {
 
 	public void serialise(Entscheidungen input) {
 
-		try (FileOutputStream fos = new FileOutputStream(speicherort);
+		try (FileOutputStream fos = new FileOutputStream(speicherort + ".ents");
 
 		ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 

@@ -16,15 +16,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GuiEntscheidungsKnopf {
-	private JFrame frame;
-	private Entscheidungen antworten;
-	private JButton entscheidungsButton;
-	private JTextField eingabefeld;
-	private JLabel counterLabel;
-	private DisplayMessage message;
-	IOSerialise io ;
+	private JFrame			frame;
+	private Entscheidungen	antworten;
+	private JButton			entscheidungsButton;
+	private JTextField		eingabefeld;
+	private JLabel			counterLabel;
+	private DisplayMessage	message;
+	IOSerialise				io;
 
 	public GuiEntscheidungsKnopf() {
 		this.message = new DisplayMessage("Random Aktivität vorschlagen!");
@@ -92,8 +93,7 @@ public class GuiEntscheidungsKnopf {
 	}
 
 	private void updateCounter() {
-		counterLabel.setText("Anzahl verfügbare Aktivitäten: "
-				+ antworten.getItemsInListe());
+		counterLabel.setText("Anzahl verfügbare Aktivitäten: " + antworten.getItemsInListe());
 	}
 
 	private void createMenuBar() {
@@ -123,8 +123,7 @@ public class GuiEntscheidungsKnopf {
 			public void actionPerformed(ActionEvent e) {
 
 				System.out.println("beenden angeklickt");
-				int wertInt = JOptionPane.showConfirmDialog(frame,
-						"Wirklich alle Einträge löschen?", "Löschen?",
+				int wertInt = JOptionPane.showConfirmDialog(frame, "Wirklich alle Einträge löschen?", "Löschen?",
 						JOptionPane.WARNING_MESSAGE);
 
 				if (wertInt == JOptionPane.OK_OPTION) {
@@ -145,8 +144,7 @@ public class GuiEntscheidungsKnopf {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("beenden angeklickt");
-				int wertInt = JOptionPane.showConfirmDialog(frame,
-						"Wirklich beenden?", "Beenden?",
+				int wertInt = JOptionPane.showConfirmDialog(frame, "Wirklich beenden?", "Beenden?",
 						JOptionPane.WARNING_MESSAGE);
 
 				if (wertInt == JOptionPane.OK_OPTION) {
@@ -173,8 +171,7 @@ public class GuiEntscheidungsKnopf {
 		@Override
 		public void actionPerformed(ActionEvent ueber) {
 			System.out.println("über angeklickt");
-			JOptionPane.showMessageDialog(frame,
-					"Wenn langweilig: Button klicken!", "über..",
+			JOptionPane.showMessageDialog(frame, "Wenn langweilig: Button klicken!", "über..",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
@@ -208,8 +205,7 @@ public class GuiEntscheidungsKnopf {
 
 			}
 			else {
-				JOptionPane.showMessageDialog(frame,
-						"Kein Speicherort angegeben!");
+				JOptionPane.showMessageDialog(frame, "Kein Speicherort angegeben!");
 			}
 
 			updateCounter();
@@ -226,15 +222,17 @@ public class GuiEntscheidungsKnopf {
 
 			JFileChooser chooser = new JFileChooser();
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			FileNameExtensionFilter entschType = new FileNameExtensionFilter("Etscheidungen File (.ents)", "ents");
+			chooser.setFileFilter(entschType);
 			int returnVal = chooser.showOpenDialog(frame);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				io.setSpeicherort(chooser.getSelectedFile().getAbsolutePath());
 				System.out.println(io.getSpeicherort());
 				antworten.listeLaden(io.deserialise(antworten));
 
-			} else {
-				JOptionPane.showMessageDialog(frame,
-						"Keine Datei zum laden ausgewählt");
+			}
+			else {
+				JOptionPane.showMessageDialog(frame, "Keine Datei zum laden ausgewählt");
 			}
 
 			updateCounter();
