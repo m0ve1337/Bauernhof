@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-
 public class IOSerialise {
-	private String	dateiPfad;
+	private String			dateiPfad;
+	private DisplayMessage	ioMessage;
+
 
 	public void serialise(AktivitaetenListe input) {
 
@@ -24,17 +25,17 @@ public class IOSerialise {
 	}
 
 	/**
-	 * @param input
+	 * @param inputListe
 	 *            eine serialisierte AktivitätenListe (z.B über das GUI
 	 *            ausgewählt)
 	 * @return eine deserialisierte AktivitätenListe
 	 */
-	public AktivitaetenListe deserialise(AktivitaetenListe input) {
+	public AktivitaetenListe deserialise(AktivitaetenListe inputListe) {
 
 		try (FileInputStream fis = new FileInputStream(dateiPfad); ObjectInputStream ois = new ObjectInputStream(fis)) {
 
-			AktivitaetenListe liste = (AktivitaetenListe) ois.readObject();
-			return liste;
+			AktivitaetenListe outputListe = (AktivitaetenListe) ois.readObject();
+			return outputListe;
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -53,5 +54,6 @@ public class IOSerialise {
 	public void setDirectory(String pfad) {
 		this.dateiPfad = pfad;
 	}
+
 
 }

@@ -9,6 +9,7 @@ public class AktivitaetenListe implements Serializable {
 	private List<String> antworten;
 	private DisplayMessage entscheidungsButtonMessage;
 
+
 	public AktivitaetenListe() {
 		antworten = new ArrayList<>();
 		entscheidungsButtonMessage = new DisplayMessage();

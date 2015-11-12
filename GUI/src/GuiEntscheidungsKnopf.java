@@ -211,6 +211,7 @@ public class GuiEntscheidungsKnopf {
 
 				io.setDirectory(path);
 				io.serialise(antworten);
+				entscheidungsButton.setText("Liste " + chooser.getSelectedFile().getName() + " gespeichert!");
 				// TODO: check ob bereits vorhanden, dann nicht überschreiben
 			}
 			else {
@@ -221,6 +222,7 @@ public class GuiEntscheidungsKnopf {
 
 		}
 	}
+
 
 	private class LadeItemsListener implements ActionListener {
 
@@ -239,6 +241,8 @@ public class GuiEntscheidungsKnopf {
 				// Mit der Methode "listeLaden" wird die ArrayList "antworten"
 				// in der Klasse Entscheidungen durch die eben geladene überschrieben.
 				antworten.listeLaden(io.deserialise(antworten));
+				entscheidungsButton.setText("Liste " + chooser.getSelectedFile().getName() + " geladen!");
+
 
 			}
 			else {
