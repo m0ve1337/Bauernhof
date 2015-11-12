@@ -20,18 +20,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GuiEntscheidungsKnopf {
 	private JFrame			frame;
-	private Entscheidungen	antworten;
+	private AktivitaetenListe	antworten;
 	private JButton			entscheidungsButton;
 	private JTextField		eingabefeld;
 	private JLabel			counterLabel;
-	private DisplayMessage	message;
+	private DisplayMessage	feedback;
 	private JFileChooser	chooser;
-	IOSerialise				io;
+	private IOSerialise		io;
 
 	public GuiEntscheidungsKnopf() {
-		this.message = new DisplayMessage("Random Aktivität vorschlagen!");
-		entscheidungsButton = new JButton(message.getMessage());
-		antworten = new Entscheidungen();
+		this.feedback = new DisplayMessage("Random Aktivität vorschlagen!");
+		entscheidungsButton = new JButton(feedback.getMessage());
+		antworten = new AktivitaetenListe();
 		eingabefeld = new JTextField(20);
 		counterLabel = new JLabel();
 		chooser = new JFileChooser();
@@ -130,8 +130,8 @@ public class GuiEntscheidungsKnopf {
 
 				if (wertInt == JOptionPane.OK_OPTION) {
 
-					message = antworten.alleAntwortenLoeschen();
-					entscheidungsButton.setText(message.getMessage());
+					feedback = antworten.alleAntwortenLoeschen();
+					entscheidungsButton.setText(feedback.getMessage());
 					updateCounter();
 				}
 
@@ -179,8 +179,8 @@ public class GuiEntscheidungsKnopf {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			message = antworten.addAntwortToList(eingabefeld.getText());
-			entscheidungsButton.setText(message.getMessage());
+			feedback = antworten.addAntwortToList(eingabefeld.getText());
+			entscheidungsButton.setText(feedback.getMessage());
 			eingabefeld.requestFocus();
 			updateCounter();
 			eingabefeld.setText(null);
@@ -199,12 +199,19 @@ public class GuiEntscheidungsKnopf {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 
 				String path = chooser.getSelectedFile().toString();
-				if (!path.endsWith(".ents"))
-					path += ".ents";
+				if (!path.endsWith(".ents")) {
+					path += "." + antworten.getItemsInListe() + ".ents";
+				}
+				else {
+					String path2 = path.substring(0, path.length() - 5);
+					path2 += "." + antworten.getItemsInListe() + ".ents";
+					path = path2;
 
-				io.setSpeicherort(path);
+				}
+
+				io.setDirectory(path);
 				io.serialise(antworten);
-
+				// TODO: check ob bereits vorhanden, dann nicht überschreiben
 			}
 			else {
 				JOptionPane.showMessageDialog(frame, "Kein Speicherort angegeben!");
@@ -220,13 +227,17 @@ public class GuiEntscheidungsKnopf {
 		@Override
 		public void actionPerformed(ActionEvent oeffnen) {
 
-
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			FileNameExtensionFilter entschType = new FileNameExtensionFilter("Etscheidungen File (.ents)", "ents");
 			chooser.setFileFilter(entschType);
 			int returnVal = chooser.showOpenDialog(frame);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				io.setSpeicherort(chooser.getSelectedFile().getAbsolutePath());
+				io.setDirectory(chooser.getSelectedFile().getAbsolutePath());
+
+				// io.deserialise kriegt die vom User ausgewählte Liste und returnt ein
+				// neues (das deserialisierte) Objekt Eingabeliste.
+				// Mit der Methode "listeLaden" wird die ArrayList "antworten"
+				// in der Klasse Entscheidungen durch die eben geladene überschrieben.
 				antworten.listeLaden(io.deserialise(antworten));
 
 			}

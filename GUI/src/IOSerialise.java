@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+
 public class IOSerialise {
-	private String	speicherort;
+	private String	dateiPfad;
 
-	public void serialise(Entscheidungen input) {
+	public void serialise(AktivitaetenListe input) {
 
-		try (FileOutputStream fos = new FileOutputStream(speicherort);
+		try (FileOutputStream fos = new FileOutputStream(dateiPfad);
 
 		ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
@@ -22,12 +23,18 @@ public class IOSerialise {
 
 	}
 
-	public Entscheidungen deserialise(Entscheidungen input) {
+	/**
+	 * @param input
+	 *            eine serialisierte AktivitätenListe (z.B über das GUI
+	 *            ausgewählt)
+	 * @return eine deserialisierte AktivitätenListe
+	 */
+	public AktivitaetenListe deserialise(AktivitaetenListe input) {
 
-		try (FileInputStream fis = new FileInputStream(speicherort); ObjectInputStream ois = new ObjectInputStream(fis)) {
+		try (FileInputStream fis = new FileInputStream(dateiPfad); ObjectInputStream ois = new ObjectInputStream(fis)) {
 
-			Entscheidungen antworten1 = (Entscheidungen) ois.readObject();
-			return antworten1;
+			AktivitaetenListe liste = (AktivitaetenListe) ois.readObject();
+			return liste;
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -39,12 +46,12 @@ public class IOSerialise {
 		return null;
 	}
 
-	public String getSpeicherort() {
-		return speicherort;
+	public String getDirectory() {
+		return dateiPfad;
 	}
 
-	public void setSpeicherort(String speicherort) {
-		this.speicherort = speicherort;
+	public void setDirectory(String pfad) {
+		this.dateiPfad = pfad;
 	}
 
 }

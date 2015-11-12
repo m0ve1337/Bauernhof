@@ -3,13 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Entscheidungen implements Serializable {
+public class AktivitaetenListe implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<String> antworten;
 	private DisplayMessage entscheidungsButtonMessage;
 
-	public Entscheidungen() {
+	public AktivitaetenListe() {
 		antworten = new ArrayList<>();
 		entscheidungsButtonMessage = new DisplayMessage();
 		setDefaultActivities();
@@ -53,7 +53,7 @@ public class Entscheidungen implements Serializable {
 
 	}
 
-	public void listeLaden(Entscheidungen eingabeliste) {
+	public void listeLaden(AktivitaetenListe eingabeliste) {
 
 		this.antworten = eingabeliste.getAntwortenListe();
 
@@ -86,8 +86,8 @@ public class Entscheidungen implements Serializable {
 		return antworten;
 	}
 
-	public void setAntwortenListe(List<String> antworten) {
-		this.antworten = antworten;
+	public void setAntwortenListe(List<String> antwortenListe) {
+		this.antworten = antwortenListe;
 	}
 
 	public boolean checkIfExistingEntry(String text) {
