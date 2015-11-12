@@ -25,6 +25,7 @@ public class GuiEntscheidungsKnopf {
 	private JTextField		eingabefeld;
 	private JLabel			counterLabel;
 	private DisplayMessage	message;
+	private JFileChooser	chooser;
 	IOSerialise				io;
 
 	public GuiEntscheidungsKnopf() {
@@ -33,6 +34,7 @@ public class GuiEntscheidungsKnopf {
 		antworten = new Entscheidungen();
 		eingabefeld = new JTextField(20);
 		counterLabel = new JLabel();
+		chooser = new JFileChooser();
 		io = new IOSerialise();
 		updateCounter();
 		createGui();
@@ -84,7 +86,6 @@ public class GuiEntscheidungsKnopf {
 			public void actionPerformed(ActionEvent e) {
 
 				entscheidungsButton.setText(antworten.getRandomAntwort());
-				System.out.println("Button-Label geändert");
 
 			}
 
@@ -105,16 +106,17 @@ public class GuiEntscheidungsKnopf {
 		JMenu dateiMenu = new JMenu("Datei");
 		bar.add(dateiMenu);
 
-		// Menüeinträge (JMenuItem) erzeugen und dem Menü (JMenu) "Datei"
+		// Menüeinträge (laden und speichern) erzeugen und dem Menü (Datei)
 		// hinzufügen
-		JMenuItem oeffnenItem = new JMenuItem("Entscheidung laden");
-
-		dateiMenu.add(oeffnenItem); // Eintrag dem Dateimenü hinzufügen
-		oeffnenItem.addActionListener(new LadeItemsListener());
+		JMenuItem ladenItem = new JMenuItem("Entscheidung laden");
+		dateiMenu.add(ladenItem);
+		ladenItem.addActionListener(new LadeItemsListener());
 		JMenuItem saveItem = new JMenuItem("Entscheidung speichern");
 		dateiMenu.add(saveItem);
 		saveItem.addActionListener(new SaveItemsListener());
 
+		// Eintrag (Einträge löschen) erzeugen und in die Menüzeile (Datei)
+		// einfügen
 		JMenuItem resetItem = new JMenuItem("Einträge löschen");
 		dateiMenu.add(resetItem);
 		resetItem.addActionListener(new ActionListener() {
@@ -136,17 +138,16 @@ public class GuiEntscheidungsKnopf {
 			}
 		});
 
+		// Eintrag (Beenden) erzeugen und in die Menüzeile (Datei) einfügen
 		JMenuItem beendenItem = new JMenuItem("Beenden");
 		dateiMenu.add(beendenItem);
-
 		beendenItem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("beenden angeklickt");
 				int wertInt = JOptionPane.showConfirmDialog(frame, "Wirklich beenden?", "Beenden?",
-						JOptionPane.WARNING_MESSAGE);
 
+				JOptionPane.WARNING_MESSAGE);
 				if (wertInt == JOptionPane.OK_OPTION) {
 
 					System.exit(0);
@@ -166,11 +167,9 @@ public class GuiEntscheidungsKnopf {
 	}
 
 	private class UeberListener implements ActionListener {
-		// innere Klasse
 
 		@Override
 		public void actionPerformed(ActionEvent ueber) {
-			System.out.println("über angeklickt");
 			JOptionPane.showMessageDialog(frame, "Wenn langweilig: Button klicken!", "über..",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -195,12 +194,15 @@ public class GuiEntscheidungsKnopf {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			JFileChooser chooser = new JFileChooser();
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int returnVal = chooser.showSaveDialog(frame);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				io.setSpeicherort(chooser.getSelectedFile().getAbsolutePath());
-				System.out.println(io.getSpeicherort());
+
+				String path = chooser.getSelectedFile().toString();
+				if (!path.endsWith(".ents"))
+					path += ".ents";
+
+				io.setSpeicherort(path);
 				io.serialise(antworten);
 
 			}
@@ -214,20 +216,17 @@ public class GuiEntscheidungsKnopf {
 	}
 
 	private class LadeItemsListener implements ActionListener {
-		// innere Klasse
 
 		@Override
 		public void actionPerformed(ActionEvent oeffnen) {
-			System.out.println("öffnen angeklickt ");
 
-			JFileChooser chooser = new JFileChooser();
+
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			FileNameExtensionFilter entschType = new FileNameExtensionFilter("Etscheidungen File (.ents)", "ents");
 			chooser.setFileFilter(entschType);
 			int returnVal = chooser.showOpenDialog(frame);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				io.setSpeicherort(chooser.getSelectedFile().getAbsolutePath());
-				System.out.println(io.getSpeicherort());
 				antworten.listeLaden(io.deserialise(antworten));
 
 			}

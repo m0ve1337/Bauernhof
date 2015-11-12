@@ -6,11 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class IOSerialise {
-	private String speicherort;
+	private String	speicherort;
 
 	public void serialise(Entscheidungen input) {
 
-		try (FileOutputStream fos = new FileOutputStream(speicherort + ".ents");
+		try (FileOutputStream fos = new FileOutputStream(speicherort);
 
 		ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
@@ -23,8 +23,8 @@ public class IOSerialise {
 	}
 
 	public Entscheidungen deserialise(Entscheidungen input) {
-		try (FileInputStream fis = new FileInputStream(speicherort);
-				ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+		try (FileInputStream fis = new FileInputStream(speicherort); ObjectInputStream ois = new ObjectInputStream(fis)) {
 
 			Entscheidungen antworten1 = (Entscheidungen) ois.readObject();
 			return antworten1;
