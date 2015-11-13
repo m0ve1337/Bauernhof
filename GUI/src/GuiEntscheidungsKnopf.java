@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GuiEntscheidungsKnopf {
+	//TODO: Refactoring -> Klasse soll nur GUI-Aufgaben übernehmen!
+
 	private JFrame			frame;
 	private AktivitaetenListe	antworten;
 	private JButton			entscheidungsButton;

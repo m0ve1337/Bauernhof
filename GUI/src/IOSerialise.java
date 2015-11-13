@@ -7,9 +7,6 @@ import java.io.ObjectOutputStream;
 
 public class IOSerialise {
 	private String			dateiPfad;
-	private DisplayMessage	ioMessage;
-
-
 	public void serialise(AktivitaetenListe input) {
 
 		try (FileOutputStream fos = new FileOutputStream(dateiPfad);
