@@ -1,3 +1,4 @@
+package GuiBasteln;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -7,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -16,28 +16,19 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GuiEntscheidungsKnopf {
-	//TODO: Refactoring -> Klasse soll nur GUI-Aufgaben übernehmen!
-
-	private JFrame			frame;
-	private AktivitaetenListe	antworten;
-	private JButton			entscheidungsButton;
-	private JTextField		eingabefeld;
-	private JLabel			counterLabel;
-	private DisplayMessage	feedback;
-	private JFileChooser	chooser;
-	private IOSerialise		io;
+	private JFrame		frame;
+	private Antworten	antworten;
+	private JButton		entscheidungsButton;
+	private JTextField	eingabefeld;
+	private JLabel		counterLabel;
 
 	public GuiEntscheidungsKnopf() {
-		this.feedback = new DisplayMessage("Random Aktivität vorschlagen!");
-		entscheidungsButton = new JButton(feedback.getMessage());
-		antworten = new AktivitaetenListe();
+		entscheidungsButton = new JButton("Random Aktivität vorschlagen!");
+		antworten = new Antworten();
 		eingabefeld = new JTextField(20);
 		counterLabel = new JLabel();
-		chooser = new JFileChooser();
-		io = new IOSerialise();
 		updateCounter();
 		createGui();
 
@@ -88,6 +79,7 @@ public class GuiEntscheidungsKnopf {
 			public void actionPerformed(ActionEvent e) {
 
 				entscheidungsButton.setText(antworten.getRandomAntwort());
+				System.out.println("Button-Label geändert");
 
 			}
 
@@ -108,17 +100,12 @@ public class GuiEntscheidungsKnopf {
 		JMenu dateiMenu = new JMenu("Datei");
 		bar.add(dateiMenu);
 
-		// Menüeinträge (laden und speichern) erzeugen und dem Menü (Datei)
+		// Menüeinträge (JMenuItem) erzeugen und dem Menü (JMenu) "Datei"
 		// hinzufügen
-		JMenuItem ladenItem = new JMenuItem("Entscheidung laden");
-		dateiMenu.add(ladenItem);
-		ladenItem.addActionListener(new LadeItemsListener());
-		JMenuItem saveItem = new JMenuItem("Entscheidung speichern");
-		dateiMenu.add(saveItem);
-		saveItem.addActionListener(new SaveItemsListener());
+		JMenuItem oeffnenItem = new JMenuItem("Öffnen");
+		dateiMenu.add(oeffnenItem); // Eintrag dem Dateimenü hinzufügen
+		oeffnenItem.addActionListener(new OeffnenListener());
 
-		// Eintrag (Einträge löschen) erzeugen und in die Menüzeile (Datei)
-		// einfügen
 		JMenuItem resetItem = new JMenuItem("Einträge löschen");
 		dateiMenu.add(resetItem);
 		resetItem.addActionListener(new ActionListener() {
@@ -132,24 +119,25 @@ public class GuiEntscheidungsKnopf {
 
 				if (wertInt == JOptionPane.OK_OPTION) {
 
-					feedback = antworten.alleAntwortenLoeschen();
-					entscheidungsButton.setText(feedback.getMessage());
+					antworten.alleAntwortenLoeschen();
+					entscheidungsButton.setText("Einträge gelöscht!");
 					updateCounter();
 				}
 
 			}
 		});
 
-		// Eintrag (Beenden) erzeugen und in die Menüzeile (Datei) einfügen
 		JMenuItem beendenItem = new JMenuItem("Beenden");
 		dateiMenu.add(beendenItem);
+
 		beendenItem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("beenden angeklickt");
 				int wertInt = JOptionPane.showConfirmDialog(frame, "Wirklich beenden?", "Beenden?",
+						JOptionPane.WARNING_MESSAGE);
 
-				JOptionPane.WARNING_MESSAGE);
 				if (wertInt == JOptionPane.OK_OPTION) {
 
 					System.exit(0);
@@ -168,10 +156,23 @@ public class GuiEntscheidungsKnopf {
 
 	}
 
+	private class OeffnenListener implements ActionListener {
+		// innere Klasse
+
+		@Override
+		public void actionPerformed(ActionEvent oeffnen) {
+			System.out.println("öffnen angeklickt ");
+
+		}
+
+	}
+
 	private class UeberListener implements ActionListener {
+		// innere Klasse
 
 		@Override
 		public void actionPerformed(ActionEvent ueber) {
+			System.out.println("über angeklickt");
 			JOptionPane.showMessageDialog(frame, "Wenn langweilig: Button klicken!", "über..",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -181,80 +182,30 @@ public class GuiEntscheidungsKnopf {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			feedback = antworten.addAntwortToList(eingabefeld.getText());
-			entscheidungsButton.setText(feedback.getMessage());
-			eingabefeld.requestFocus();
-			updateCounter();
-			eingabefeld.setText(null);
+			String eingabe = eingabefeld.getText().trim();
 
-		}
+			if (eingabe.isEmpty()) {
+				entscheidungsButton.setText("bitte keine leeren Eingaben!");
+				eingabefeld.requestFocus();
 
-	}
-
-	private class SaveItemsListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			int returnVal = chooser.showSaveDialog(frame);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-				String path = chooser.getSelectedFile().toString();
-				if (!path.endsWith(".ents")) {
-					path += "." + antworten.getItemsInListe() + ".ents";
-				}
-				else {
-					String path2 = path.substring(0, path.length() - 5);
-					path2 += "." + antworten.getItemsInListe() + ".ents";
-					path = path2;
-
-				}
-
-				io.setDirectory(path);
-				io.serialise(antworten);
-				entscheidungsButton.setText("Liste " + chooser.getSelectedFile().getName() + " gespeichert!");
-				// TODO: check ob bereits vorhanden, dann nicht überschreiben
 			}
+
+			else if (antworten.checkIfExistingEntry(eingabe)) {
+				entscheidungsButton.setText("Eintrag bereits vorhanden!");
+				eingabefeld.requestFocus();
+
+			}
+
 			else {
-				JOptionPane.showMessageDialog(frame, "Kein Speicherort angegeben!");
-			}
 
-			updateCounter();
+				antworten.addAntwortToList(eingabe);
+				entscheidungsButton.setText("Eintrag hinzugefügt!");
+				eingabefeld.setText(null);
+				updateCounter();
+				eingabefeld.requestFocus();
+
+			}
 
 		}
-	}
-
-
-	private class LadeItemsListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent oeffnen) {
-
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			FileNameExtensionFilter entschType = new FileNameExtensionFilter("Etscheidungen File (.ents)", "ents");
-			chooser.setFileFilter(entschType);
-			int returnVal = chooser.showOpenDialog(frame);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				//TODO try catch mit print Stactrace 
-				io.setDirectory(chooser.getSelectedFile().getAbsolutePath());
-
-				// io.deserialise kriegt die vom User ausgewählte Liste und returnt ein
-				// neues (das deserialisierte) Objekt Eingabeliste.
-				// Mit der Methode "listeLaden" wird die ArrayList "antworten"
-				// in der Klasse Entscheidungen durch die eben geladene überschrieben.
-				antworten.listeLaden(io.deserialise(antworten));
-				entscheidungsButton.setText("Liste " + chooser.getSelectedFile().getName() + " geladen!");
-
-
-			}
-			else {
-				JOptionPane.showMessageDialog(frame, "Keine Datei zum laden ausgewählt");
-			}
-
-			updateCounter();
-
-		}
-
 	}
 }

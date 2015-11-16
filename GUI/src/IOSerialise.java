@@ -6,7 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class IOSerialise {
-	private String			dateiPfad;
+	private String dateiPfad;
+
 	public void serialise(AktivitaetenListe input) {
 
 		try (FileOutputStream fos = new FileOutputStream(dateiPfad);
@@ -29,10 +30,13 @@ public class IOSerialise {
 	 */
 	public AktivitaetenListe deserialise(AktivitaetenListe inputListe) {
 
-		try (FileInputStream fis = new FileInputStream(dateiPfad); ObjectInputStream ois = new ObjectInputStream(fis)) {
+		try (FileInputStream fis = new FileInputStream(dateiPfad);
+				ObjectInputStream ois = new ObjectInputStream(fis)) {
 
-			AktivitaetenListe outputListe = (AktivitaetenListe) ois.readObject();
+			AktivitaetenListe outputListe = (AktivitaetenListe) ois
+					.readObject();
 			return outputListe;
+			//TODO direkt die ArrayListe zurückgeben mit .getListe
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -51,6 +55,5 @@ public class IOSerialise {
 	public void setDirectory(String pfad) {
 		this.dateiPfad = pfad;
 	}
-
 
 }

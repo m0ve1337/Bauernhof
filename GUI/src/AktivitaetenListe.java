@@ -48,7 +48,8 @@ public class AktivitaetenListe implements Serializable {
 	}
 
 	public DisplayMessage alleAntwortenLoeschen() {
-		antworten.removeAll(antworten);
+		// TODO clear verwenden
+		antworten.clear();// nicht removeAll(antworten);
 		entscheidungsButtonMessage.setMessage("Einträge gelöscht!");
 		return entscheidungsButtonMessage;
 
