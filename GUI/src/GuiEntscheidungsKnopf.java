@@ -99,6 +99,8 @@ public class GuiEntscheidungsKnopf {
 		counterLabel.setText("Anzahl verfügbare Aktivitäten: " + antworten.getItemsInListe());
 	}
 
+	
+
 	private void createMenuBar() {
 		// Menüzeile (JMenuBar) erzeugen und in das Fenster (JFrame) einfügen
 		JMenuBar bar = new JMenuBar();
