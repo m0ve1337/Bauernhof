@@ -19,15 +19,16 @@ import javax.swing.JTextArea;
 public class Gui {
 
 	JFrame	frame;
-	JTextArea	textFeld;
+	JTextArea textFeld;
 	FileManager	filemanager	= new FileManager();
+	Container contentPane;
 
 
 	public Gui() {
 		frame = new JFrame();
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Container contentPane = frame.getContentPane();
+		contentPane = frame.getContentPane();
 
 		createMenuBar();
 
@@ -40,8 +41,8 @@ public class Gui {
 
 
 
-		JTextArea textFeld = new JTextArea();
-		textFeld.setText("Text laden");
+		this.textFeld = new JTextArea(30, 60);
+		this.textFeld.setText("Text laden");
 
 		contentPane.add(textFeld, BorderLayout.CENTER);
 
@@ -64,11 +65,14 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("laden...");
 				readText();
+				
 
 			}
 		});
 
 	}
+	
+	
 
 	private void readText() {
 	    JFileChooser fileChooser = new JFileChooser();
@@ -76,14 +80,20 @@ public class Gui {
 	    if (choice == JFileChooser.APPROVE_OPTION) {
 	      try {
 				String test = filemanager.getText(fileChooser.getSelectedFile());
+				System.out.println(test);
 				textFeld.setText(test);
-
-
+				
+			
+				 
+				
+	    	  
 	      } catch (IOException e) {
 				JOptionPane.showMessageDialog(frame, "Fehler beim laden: " + e.getMessage(),
 	            "Error", JOptionPane.ERROR_MESSAGE);
 	      }
+	      
 	    }
+	    
 	  }
 
 }
