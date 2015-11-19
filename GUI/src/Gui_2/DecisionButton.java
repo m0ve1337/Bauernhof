@@ -25,12 +25,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DecisionButton {
 
-	private JFrame			frame;
-	private DecisionData	decisionData;
-	private JRadioButton	ioSaveTextRadio;
-	private JRadioButton	ioSaveDateiRadio;
-	private ButtonGroup		bg1;
-	private String			ioMethod;
+	private JFrame frame;
+	private DecisionData decisionData;
+	private JRadioButton ioSaveTextRadio;
+	private JRadioButton ioSaveDateiRadio;
+	private ButtonGroup bg1;
+	private String ioMethod = "File";
 
 	public DecisionButton() {
 		decisionData = new DecisionData();
@@ -76,7 +76,8 @@ public class DecisionButton {
 		textField.setToolTipText("Hier eine Tätigkeit eingeben");
 		inputPanel.add(textField);
 		JButton saveButton = new JButton("save");
-		saveButton.setMnemonic(KeyEvent.VK_ENTER); // alt+enter um den button zu waehlen
+		saveButton.setMnemonic(KeyEvent.VK_ENTER); // alt+enter um den button zu
+													// waehlen
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -100,23 +101,13 @@ public class DecisionButton {
 		return decisionData.getRandomDecision();
 	}
 
-
 	private void saveDecisions() {
 		JFileChooser fileChooser = new JFileChooser();
 		int choice = fileChooser.showSaveDialog(frame);
 		if (choice == JFileChooser.APPROVE_OPTION) {
 			try {
 
-				if (ioMethod == "File") {
-					decisionData.saveDecisions(fileChooser.getSelectedFile());
-				}
-				else if (ioMethod == "Text") {
-					decisionData.saveAsTextDecisions(fileChooser.getSelectedFile());
-				}
-
-				else
-					JOptionPane.showMessageDialog(frame, "Bitte eine IO Methode auswählen", "Error",
-							JOptionPane.ERROR_MESSAGE);
+				decisionData.saveDecisions(fileChooser.getSelectedFile(), getIoMethod());
 
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(frame, "Fehler beim speichern: " + e.getMessage(), "Error",
@@ -132,32 +123,20 @@ public class DecisionButton {
 		if (ioMethod == "Text") {
 			FileNameExtensionFilter filterText = new FileNameExtensionFilter("Text File (.txt)", "txt");
 			fileChooser.setFileFilter(filterText);
-		}
-			else if (ioMethod == "File"){
-				FileNameExtensionFilter filterDatei = new FileNameExtensionFilter("Text File (.datei)", "datei");
-				fileChooser.setFileFilter(filterDatei);
-			}
-			else {
+		} else if (ioMethod == "File") {
+			FileNameExtensionFilter filterDatei = new FileNameExtensionFilter("Text File (.datei)", "datei");
+
+			// TODO: implement suffix when file is saved
+			fileChooser.setFileFilter(filterDatei);
+		} else {
 		}
 
 		int choice = fileChooser.showOpenDialog(frame);
 		if (choice == JFileChooser.APPROVE_OPTION) {
 
 			try {
+				decisionData.loadDecisions(fileChooser.getSelectedFile(), getIoMethod());
 
-				if (ioMethod == "File") {
-
-					decisionData.loadDecisions(fileChooser.getSelectedFile());
-				}
-				else if (ioMethod == "Text") {
-					decisionData.loadAsTextDecisions(fileChooser.getSelectedFile());
-
-				}
-
-				else {
-					JOptionPane.showMessageDialog(frame, "Fehler beim Laden: zuerst IO Methode wählen! ", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
 			} catch (IOException | ClassNotFoundException e) {
 				JOptionPane.showMessageDialog(frame, "Fehler beim Laden: " + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -194,6 +173,7 @@ public class DecisionButton {
 		JMenu ioMenu = new JMenu("IO-Change");
 
 		ioSaveDateiRadio = new JRadioButton("Datei-Modus");
+		ioSaveDateiRadio.setSelected(true);
 		ioSaveDateiRadio.addActionListener(new ActionListener() {
 
 			@Override

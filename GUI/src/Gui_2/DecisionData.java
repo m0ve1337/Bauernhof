@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Random;
 
 public class DecisionData {
-	private final List<String>	decisions;
-	private final Random		random;
-	private DecisionFileManager	fileManager;
+	private final List<String> decisions;
+	private final Random random;
+	private DecisionFileManager fileManager;
 
 	public DecisionData() {
 		decisions = new ArrayList<String>();
@@ -22,11 +22,9 @@ public class DecisionData {
 		String text = input.trim();
 		if (text.isEmpty()) {
 			addOperationResult.addErrorMessage("Nichts eigegeben");
-		}
-		else if (decisions.contains(text)) {
+		} else if (decisions.contains(text)) {
 			addOperationResult.addErrorMessage("Eintrag schon vorhanden");
-		}
-		else {
+		} else {
 			decisions.add(text);
 		}
 		return addOperationResult;
@@ -45,20 +43,39 @@ public class DecisionData {
 		this.decisions.addAll(newDecisions);
 	}
 
-	public void saveDecisions(File file) throws IOException {
-		fileManager.save(file, decisions);
+	public void saveDecisions(File file, String ioMethod) throws IOException {
+
+		if (ioMethod == null) {
+			System.out.println("fail");
+			// TODO: implement Error Message
+
+		}
+
+		else if (ioMethod == "File") {
+			fileManager.save(file, decisions);
+		} else if (ioMethod == "Text") {
+
+			fileManager.saveAsText(file, decisions);
+		}
+
 	}
 
-	public void loadDecisions(File file) throws ClassNotFoundException, IOException {
-		setDecisions(fileManager.load(file));
-	}
+	public void loadDecisions(File file, String ioMethod) throws ClassNotFoundException, IOException {
 
-	public void loadAsTextDecisions(File file) throws ClassNotFoundException, IOException {
-		setDecisions(fileManager.loadAsText(file));
-	}
+		if (ioMethod == null) {
+			System.out.println("fail");
+			// TODO: implement Error Message
 
-	public void saveAsTextDecisions(File file) throws IOException {
-		fileManager.saveAsText(file, decisions);
+		}
+
+		else if (ioMethod == "File") {
+			setDecisions(fileManager.load(file));
+		}
+
+		else if (ioMethod == "Text") {
+
+			setDecisions(fileManager.loadAsText(file));
+		}
 
 	}
 }
