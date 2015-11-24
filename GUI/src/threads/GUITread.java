@@ -17,6 +17,9 @@ public class GUITread {
 	private JProgressBar	bar		= new JProgressBar(0, 100);
 	private JLabel			label	= new JLabel("Threads: ");
 	private int				counter	= 0;
+	private List<Thread>	threads	= new ArrayList<>();
+
+
 	public void createAndShowGUI() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bar.setValue(0);
@@ -26,17 +29,18 @@ public class GUITread {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public synchronized void actionPerformed(ActionEvent e) {
-				List<Thread> threads = new ArrayList<>();
+				Thread updater = new Thread(new BarUpdater());
 
-				Thread barThread = new Thread(new BarUpdater());
-				threads.add(barThread);
 
-				for (Thread t : threads) {
+				threads.add(updater);
+				System.out.println("thread 2 ArrayList added");
+				counter++;
 
-					t.start();
-					counter++;
+				System.out.println(counter);
+				updater.start();
 
-				}
+
+
 
 			}
 		}
@@ -52,13 +56,11 @@ public class GUITread {
 
 		@Override
 		public synchronized void run() {
+			
+
 
 			for (int i = 0; i <= 100; i++) {
 				bar.setValue(i);
-				//				if (i == 100) {
-				//					counter--;
-				//}
-				
 				
 				try {
 					Thread.sleep(50);
