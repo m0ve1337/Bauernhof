@@ -13,8 +13,12 @@ public class GUITread implements Runnable {
 	private JPanel			panel	= new JPanel();
 	private JProgressBar	bar		= new JProgressBar(0, 100);
 	private JLabel			label	= new JLabel();
+	private int				initialThreads;
+	int						queuedThreads	= 0;
 
 	public synchronized void createAndShowGUI() {
+		initialThreads = Thread.activeCount();
+		System.out.println("initial(1):" + initialThreads);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bar.setValue(0);
 		bar.setSize(200, 200);
@@ -22,14 +26,16 @@ public class GUITread implements Runnable {
 		JButton button = new JButton("Knopf");
 
 		button.addActionListener(new ActionListener() {
-			int	initialThreads	= Thread.activeCount();
+
 			@Override
 
 			public void actionPerformed(ActionEvent e) {
+				setLabelText();
 
 				new Thread(() -> {
 					doSomething(initialThreads);
 				}).start();
+
 
 
 			}
@@ -42,8 +48,13 @@ public class GUITread implements Runnable {
 	}
 
 	private synchronized void doSomething(int initialThreads) {
-		int waitingThreads = Thread.activeCount();
-		label.setText("Threads waiting: " + (waitingThreads - initialThreads));
+
+		queuedThreads = Thread.activeCount();
+		System.out.println(queuedThreads);
+
+
+		setLabelText();
+
 		for (int i = 0; i <= 100; i++) {
 			bar.setValue(i);
 			try {
@@ -52,9 +63,14 @@ public class GUITread implements Runnable {
 				e.printStackTrace();
 			}
 			
-			waitingThreads = Thread.activeCount();
-			label.setText("Threads waiting: " + (waitingThreads - initialThreads ));
+			queuedThreads = Thread.activeCount();
+
+			setLabelText();
 		}
+	}
+
+	private void setLabelText() {
+		label.setText("Threads waiting: " + (queuedThreads - initialThreads));
 	}
 
 	@Override
