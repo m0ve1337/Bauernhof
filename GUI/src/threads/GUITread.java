@@ -57,6 +57,7 @@ public class GUITread {
 
 			while (it.hasNext()) {
 				System.out.println("asd");
+				System.err.println("asd2");
 
 			}
 
