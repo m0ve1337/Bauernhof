@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,7 +20,6 @@ public class GUITread {
 	private int				counter	= 0;
 	private List<Thread>	threads	= new ArrayList<>();
 
-
 	public void createAndShowGUI() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bar.setValue(0);
@@ -31,16 +31,12 @@ public class GUITread {
 			public synchronized void actionPerformed(ActionEvent e) {
 				Thread updater = new Thread(new BarUpdater());
 
-
 				threads.add(updater);
 				System.out.println("thread 2 ArrayList added");
 				counter++;
 
 				System.out.println(counter);
 				updater.start();
-
-
-
 
 			}
 		}
@@ -52,19 +48,24 @@ public class GUITread {
 		frame.setSize(200, 100);
 		frame.setVisible(true);
 	}
-	public class BarUpdater implements Runnable {
+	private class BarUpdater implements Runnable {
 
 		@Override
 		public synchronized void run() {
-			
 
+			Iterator<Thread> it = threads.iterator();
+
+			while (it.hasNext()) {
+				System.out.println("asd");
+
+			}
 
 			for (int i = 0; i <= 100; i++) {
 				bar.setValue(i);
-				
+
 				try {
 					Thread.sleep(50);
-					
+
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

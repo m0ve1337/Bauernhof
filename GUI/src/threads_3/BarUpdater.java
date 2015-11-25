@@ -13,9 +13,9 @@ public class BarUpdater implements Runnable {
 	@Override
 	public void run() {
 
-		if (Thread.activeCount() >= 2) {
+
 			doSomething(bar);
-		}
+
 
 
 	}
