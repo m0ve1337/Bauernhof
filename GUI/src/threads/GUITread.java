@@ -58,6 +58,7 @@ public class GUITread {
 		}
 
 		private synchronized void doSomething() {
+			// eigenes Lock erstellen!
 
 			for (int i = 0; i <= 100; i++) {
 				bar.setValue(i);

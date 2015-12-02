@@ -14,7 +14,7 @@ public class Beispiel1 {
       Executors.newCachedThreadPool();
     
     Future<Integer> result = executorService.submit(
-        new FibonacciCallable(40));
+        new FibonacciCallable(50));
     
     System.out.println("Rechnen");
     // Hier noch andere Sachen tun
