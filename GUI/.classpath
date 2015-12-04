@@ -3,6 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="threads_2"/>
 	<classpathentry kind="src" path="ThreadsII"/>
+	<classpathentry kind="src" path="Uhr"/>
+	<classpathentry kind="src" path="CupOfTea"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
